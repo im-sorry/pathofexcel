@@ -1,43 +1,28 @@
-import { Being } from '../modules/being';
+import { Scene } from '../modules/scene';
 
 export class Timeline {
   startTime: number;
   nowTime: number;
-  beings: Being[];
   timer?: NodeJS.Timer;
-  constructor(beings: Being[]) {
+  scene: Scene | null = null;
+  constructor() {
     this.startTime = Date.now();
     this.nowTime = this.startTime;
-    this.beings = beings;
-    this.beings.forEach((being) => {
-      being.setTimeline(this);
-    });
   }
-  add(being: Being) {
-    this.beings.push(being);
-    being.setTimeline(this);
-  }
-  remove(being: Being) {
-    this.beings = this.beings.filter((b) => b !== being);
+  addScene(scene: Scene) {
+    this.scene = scene;
   }
   stop() {
     if (this.timer) {
       clearInterval(this.timer);
     }
   }
-  init() {
-    this.startTime = Date.now();
-    this.beings.forEach((being) => {
-      being.init(this.startTime);
-    });
-  }
   run() {
-    this.init();
+    if (!this.scene) return;
+    this.startTime = Date.now();
     this.timer = setInterval(() => {
       this.nowTime = Date.now();
-      this.beings.forEach((being) => {
-        being.tick(this.startTime, this.nowTime);
-      });
+      this.scene?.tick(this.startTime, this.nowTime);
     }, 1000 / 60);
   }
 }
