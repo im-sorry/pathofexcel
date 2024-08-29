@@ -20,6 +20,12 @@ export class Scene {
     }
   }
 
+  init(now: number) {
+    this.player?.init(now);
+    this.enemies.forEach((enemy) => {
+      enemy.init(now);
+    });
+  }
   tick(start: number, now: number) {
     this.player?.tick(start, now);
     this.enemies.forEach((enemy) => {

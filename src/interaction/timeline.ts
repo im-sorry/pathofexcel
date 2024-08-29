@@ -17,12 +17,19 @@ export class Timeline {
       clearInterval(this.timer);
     }
   }
+  init(now: number) {
+    if (!this.scene) return;
+    this.scene.init(now);
+  }
   run() {
     if (!this.scene) return;
     this.startTime = Date.now();
+    this.init(this.startTime);
     this.timer = setInterval(() => {
+      console.log('------------------tick---------start');
       this.nowTime = Date.now();
       this.scene?.tick(this.startTime, this.nowTime);
-    }, 1000 / 60);
+      console.log('------------------tick---------end');
+    }, 1000 / 2);
   }
 }

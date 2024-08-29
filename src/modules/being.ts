@@ -175,7 +175,10 @@ export class Being {
   }
 
   tick(start: number, now: number) {
+    console.log('tick', start, now);
+
     if (now >= this.act_end) {
+      console.log('act');
       this.act();
       this.initActTime(now);
     }
